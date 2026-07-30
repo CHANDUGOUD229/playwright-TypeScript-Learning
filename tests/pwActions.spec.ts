@@ -561,7 +561,7 @@ async function selectDate(targetYear: string, targetMonth: string, targetDate: s
     for (let dates of dateLocator) {
         let dateTxt: string = await dates.innerText();
         if (dateTxt === targetDate) {
-           await dates.click();
+            await dates.click();
             break;
         }
 
@@ -573,7 +573,7 @@ async function selectDate(targetYear: string, targetMonth: string, targetDate: s
 
 
 
-test.only("handling date pickers", async ({ page }) => {
+test("handling date pickers", async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     // await page.locator("#datepicker").fill("07/21/2026");
     // let txt: string = await page.locator("#datepicker").inputValue();
@@ -583,9 +583,94 @@ test.only("handling date pickers", async ({ page }) => {
     const date: string = "25";
     await page.locator("#datepicker").click();
     selectDate(year, month, date, page, false);
+    await page.waitForTimeout(5000);
+})
 
+async function checkRadioBtn(exOption: string, page: Page, locator: string) {
+    let options: Locator[] = await page.locator(locator).all();
+    for (let option of options) {
+        let txt: string | null = await option.textContent();
+        if (txt?.includes(exOption)) {
+            await option.check();
+            await expect(option).toBeChecked();
+        }
+
+    }
+
+}
+
+async function enterText(text: string, page: Page, locator: string) {
+    const element = page.locator(locator);
+    await element.waitFor({ state: "visible" });
+    await element.fill(text);
+}
+
+test("dummy ticket application not compalted fully...", async ({ page }) => {
+    await page.goto("https://www.dummyticket.com/dummy-ticket-for-visa-application/");
+    // await checkRadioBtn("2,750",page,"label input[type='radio']");
+    let options: Locator = page.locator(".opc-radio-list-label");
+    let count: number = await options.count();
+    for (let i = 0; i < count; i++) {
+        let radioBtnTxt: string = await page.locator(".price bdi").nth(i).innerText();
+        console.log(radioBtnTxt);
+        if (radioBtnTxt?.includes("₹2,750")) {
+            await options.nth(i).click();
+        }
+    }
+
+    await page.waitForTimeout(6000);
+
+
+    await enterText("chandra", page, "#travname");
+    await enterText("chirra", page, "#travlastname");
+    await page.waitForTimeout(6000);
+})
+
+test("simple dialog ahndling", async ({ page }) => {
+    await page.goto("https://testautomationpractice.blogspot.com/");
+
+    // page.on("dialog",(Dialog)=>{
+    //     console.log(Dialog.type());
+    //     expect(Dialog.type()).toContain("alert");
+    //     console.log(Dialog.message());
+    //     expect(Dialog.message()).toContain("I am an alert box!");
+    //     Dialog.accept();
+
+    // })
+
+    // await page.locator("#alertBtn").click();
+    page.on("dialog", (Dialog) => {
+        console.log(Dialog.type());
+        console.log(Dialog.message());
+        Dialog.accept();
+        // Dialog.dismiss();
+    })
+    await page.locator("#confirmBtn").click();
+
+    await expect(page.locator("#demo")).toHaveText("You pressed OK!");
+
+    // await page.locator("#alertBtn").click();
+    // await page.locator("#promptBtn").click();
     await page.waitForTimeout(5000);
 
 
+})
+
+test.only(" promt dialog handling", async ({ page }) => {
+    await page.goto("https://testautomationpractice.blogspot.com/");
+    page.on("dialog", (dialog) => {
+        console.log(dialog.type());
+        // expect(Dialog.type()).toContain("Promt");
+        console.log(dialog.message());
+        // expect(Dialog.message()).toContain("I am an alert box!");
+        let message: string = dialog.defaultValue();
+        console.log(message);
+        dialog.accept("chandra");
+    })
+    await page.locator("#promptBtn").click();
+    await expect(page.locator("#demo")).toHaveText("Hello chandra! How are you today?Hello");
+
 
 })
+
+
