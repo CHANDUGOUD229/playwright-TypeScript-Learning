@@ -774,7 +774,7 @@ test("Handling Tabs ", async () => {
 
 })
 
-test.only("handle popup windows", async ({ browser }) => {
+test("handle popup windows", async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://testautomationpractice.blogspot.com/");
@@ -801,4 +801,27 @@ test.only("handle popup windows", async ({ browser }) => {
     }
 
     await page.waitForTimeout(4000);
+})
+
+test.only("handle authentication popup", async ({ browser }) => {
+    // https://username:password@the-internet.herokuapp.com/
+    // Approch 1
+    /* const context = await browser.newContext();
+      const page = await context.newPage();
+      await page.goto("https://admin:admin@the-internet.herokuapp.com/basic_auth");
+      await page.waitForLoadState();
+      await expect( page.locator("text=Congratulations")).toBeVisible();
+      await page.waitForTimeout(6000);
+      */
+
+    // Approch 2 passing username and password browsercontext
+    const context = await browser.newContext({ httpCredentials: { username: "admin", password: "admin" } });
+    const page = await context.newPage();
+    await page.goto("https://the-internet.herokuapp.com/basic_auth");
+    await page.waitForLoadState();
+    await expect(page.locator("text=Congratulations")).toBeVisible();
+    await page.waitForTimeout(2000);
+    
+
+
 })
