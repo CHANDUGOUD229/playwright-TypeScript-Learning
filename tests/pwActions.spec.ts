@@ -803,7 +803,7 @@ test("handle popup windows", async ({ browser }) => {
     await page.waitForTimeout(4000);
 })
 
-test.only("handle authentication popup", async ({ browser }) => {
+test("handle authentication popup", async ({ browser }) => {
     // https://username:password@the-internet.herokuapp.com/
     // Approch 1
     /* const context = await browser.newContext();
@@ -821,7 +821,21 @@ test.only("handle authentication popup", async ({ browser }) => {
     await page.waitForLoadState();
     await expect(page.locator("text=Congratulations")).toBeVisible();
     await page.waitForTimeout(2000);
-    
 
+
+})
+
+test.only("Auto waiting andforcing ",async({page})=>{
+    // test.setTimeout(50000); //local test 
+    // test.slow(); //90 sec
+    await page.goto("https://demowebshop.tricentis.com/");
+    //assertions has auto wait works
+    await expect(page).toHaveURL("https://demowebshop.tricentis.com/",{timeout:10000});
+    await expect(page.locator("#small-searchterms")).toBeVisible({timeout:10000});//assertion time out
+
+    //Action has deffault auto wait works
+
+    await page.locator("#small-searchterms").fill("Laptop",{force:true});
+    await page.locator("input.search-box-button").click({force:true});
 
 })
