@@ -1,4 +1,4 @@
-import { test, expect, Locator, Page } from "@playwright/test";
+import { test, expect, Locator, Page, chromium, FrameLocator, firefox, webkit } from "@playwright/test";
 //text box
 //radio button
 //check boxes
@@ -656,7 +656,7 @@ test("simple dialog ahndling", async ({ page }) => {
 
 })
 
-test.only(" promt dialog handling", async ({ page }) => {
+test(" promt dialog handling", async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     page.on("dialog", (dialog) => {
         console.log(dialog.type());
@@ -664,6 +664,7 @@ test.only(" promt dialog handling", async ({ page }) => {
         console.log(dialog.message());
         // expect(Dialog.message()).toContain("I am an alert box!");
         let message: string = dialog.defaultValue();
+        expect(message).toContain("");
         console.log(message);
         dialog.accept("chandra");
     })
@@ -673,4 +674,102 @@ test.only(" promt dialog handling", async ({ page }) => {
 
 })
 
+test("handling iframes ", async ({ page }) => {
+    await page.goto("https://ui.vision/demo/webtest/frames/");
+    let frames = page.frames();
+    console.log("number of frames", frames.length);
+    //------------------approch 1 frame page.frame();-------------------
+    // name or url by using this we can navigate to frame
+    let frame = page.frame({ url: "https://ui.vision/demo/webtest/frames/frame_1" });
+    if (frame) {
+        //  await   frame.locator("input[name=mytext1]").fill("Automation");
+        await frame.fill("input[name=mytext1]", "playwright");
+    } else {
+        console.log("frame is not available....");
+    }
 
+    //------------------- using frameLocator()--------single line we can handle it??------
+    let framess: Locator = page.frameLocator("frame[src='frame_3.html']").locator("input[name='mytext3']");
+    await framess.fill("Automation");
+    await page.waitForTimeout(2000);
+})
+
+
+test("handling inner  frames ", async ({ page }) => {
+    await page.goto("https://ui.vision/demo/webtest/frames/");
+
+    let frame3 = page.frame({ url: "https://ui.vision/demo/webtest/frames/frame_3" })
+
+    if (frame3) {
+        //  await   frame.locator("input[name=mytext1]").fill("Automation");
+        await frame3.fill("input[name=mytext3]", "playwright Automation");
+        let childFrames = frame3.childFrames();
+        console.log("Total child frames is : ", childFrames.length);
+        childFrames[0].getByLabel("I am a human").click();
+        let rdioBtn = childFrames[0].getByLabel("Form Autofilling");
+        await rdioBtn.click();
+        await expect(rdioBtn).toBeChecked();
+
+    } else {
+        console.log("frame is not available....");
+    }
+
+    await page.waitForTimeout(2000);
+
+
+})
+
+test("Browser context checking", async () => {
+    const browser = await chromium.launch();
+    // const browser1 = await chromium.launch();
+
+    const context = await browser.newContext();
+    const context1 = await browser.newContext();
+
+    const page1 = await context.newPage();
+    const page2 = await context.newPage();
+    const page3 = await context.newPage();
+    const page4 = await context1.newPage();
+    const page5 = await context1.newPage();
+    const page6 = await context1.newPage();
+
+
+    await page1.goto("https://testautomationpractice.blogspot.com/");
+    await page2.goto("https://www.google.com/");
+    await page3.goto("https://www.instagram.com/");
+    await page4.goto("https://www.facebook.com/");
+    await page5.goto("https://web.whatsapp.com/");
+    await page6.goto("https://www.linkedin.com/");
+    console.log(browser.contexts().length, "length of contexts");
+    console.log(context.pages().length, " lenth of pages");
+
+
+
+})
+
+
+test.only("Handling Tabs ", async () => {
+    const browser = await chromium.launch({ headless: false });
+    const context = await browser.newContext();
+    const parentPage = await context.newPage();
+    await parentPage.goto("https://testautomationpractice.blogspot.com/");
+
+
+    const [childPages] = await Promise.all([
+        context.waitForEvent("page"),
+        parentPage.locator("button:has-text('New Tab')").click()])
+    //approch 1 switch between pages by using (context) its return array
+    const pages = context.pages();
+    console.log("number of pages open", pages.length);
+    let titleOfPArent = await pages[0].title();
+    let titleOfChild = await pages[1].title();
+    console.log(titleOfPArent, "------------ ", titleOfChild);
+    await pages[1].locator("input.gsc-input").fill("Automation");
+    await pages[1].locator("input.gsc-search-button").click();
+    // await pages[1].close();
+    await parentPage.bringToFront();
+    await parentPage.locator("button:has-text('New Tab')").click();
+    //approch 2 if we have only two tabs its good to use
+    console.log(await parentPage.title(), "======>", await childPages.title())
+
+})
