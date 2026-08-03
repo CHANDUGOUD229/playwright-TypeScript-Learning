@@ -748,7 +748,7 @@ test("Browser context checking", async () => {
 })
 
 
-test.only("Handling Tabs ", async () => {
+test("Handling Tabs ", async () => {
     const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext();
     const parentPage = await context.newPage();
@@ -772,4 +772,33 @@ test.only("Handling Tabs ", async () => {
     //approch 2 if we have only two tabs its good to use
     console.log(await parentPage.title(), "======>", await childPages.title())
 
+})
+
+test.only("handle popup windows", async ({ browser }) => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("https://testautomationpractice.blogspot.com/");
+    const [popups] = await Promise.all([
+        page.waitForEvent("popup"),
+        page.locator("#PopUp").click()
+    ])
+    await popups.waitForLoadState();//wait for load state
+    const allPopups = context.pages();
+    const url0: string = allPopups[0].url();
+    const url1: string = allPopups[1].url();
+    const url2: string = allPopups[2].url();
+    console.log(url1, "===", url2, "======", url0);
+    console.log("number of pages ", allPopups.length);
+
+    if (allPopups.length > 2) {
+        for (let popUp of allPopups) {
+            let titleOfPage: string = await popUp.title();
+            if (titleOfPage.toLowerCase().includes("selenium".toLowerCase())) {
+                await popUp.getByAltText("BrowserStack").click();
+                popUp.close();
+            }
+        }
+    }
+
+    await page.waitForTimeout(4000);
 })
