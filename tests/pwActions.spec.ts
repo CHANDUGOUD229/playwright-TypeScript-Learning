@@ -825,17 +825,59 @@ test("handle authentication popup", async ({ browser }) => {
 
 })
 
-test.only("Auto waiting andforcing ",async({page})=>{
+test("Auto waiting andforcing ", async ({ page }) => {
     // test.setTimeout(50000); //local test 
     // test.slow(); //90 sec
     await page.goto("https://demowebshop.tricentis.com/");
     //assertions has auto wait works
-    await expect(page).toHaveURL("https://demowebshop.tricentis.com/",{timeout:10000});
-    await expect(page.locator("#small-searchterms")).toBeVisible({timeout:10000});//assertion time out
+    await expect(page).toHaveURL("https://demowebshop.tricentis.com/", { timeout: 10000 });
+    //auto retrying assertion if we pass the argument as page or locator that is auto retrying assertion
+    // if we pass argumenet as value its non retrying assertion
+    // if we use 'not' in assertion its nagotible matcher we can apply any one assertion
+    await expect(page.locator("#small-searchterms")).toBeVisible({ timeout: 10000 });//assertion time out
 
     //Action has deffault auto wait works
 
-    await page.locator("#small-searchterms").fill("Laptop",{force:true});
-    await page.locator("input.search-box-button").click({force:true});
+    await page.locator("#small-searchterms").fill("Laptop", { force: true });
+    await page.locator("input.search-box-button").click({ force: true });
+
+})
+
+test.only("hard vs soft assertions", async ({ page }) => {
+    test.setTimeout(20000);
+    await page.goto("https://demowebshop.tricentis.com/");
+
+    //Hard assertions..........
+
+    //if assertion is failed remaing steps will break  the execution.......
+
+    // await expect(page).toHaveURL("https://demowebshop.tricentis.com/");
+    // await expect(page.locator("#small-searchterms")).toBeVisible();
+    // const txtbox: Locator = page.locator("#small-searchterms");
+    // await expect(txtbox).toBeVisible();
+    // await expect(txtbox).toBeEditable();
+    // await txtbox.fill("Laptop");
+    // const button:Locator= page.locator("input.search-box-button");
+    // await expect(button).toBeVisible({timeout:20000});
+    // await expect(button).not.toBeDisabled();
+    // await expect(button).toBeEnabled();
+    // await button.click();
+    // await page.waitForTimeout(4000);
+
+    //if assertion is failed remaing steps will continue  the execution.......
+    //Soft assertion
+    await expect.soft(page).toHaveURL("https://demowebshop.tricentis./");
+    await expect.soft(page.locator("#small-searchterms")).toBeVisible();
+    const txtbox: Locator = page.locator("#small-searchterms");
+    await expect.soft(txtbox).toBeVisible();
+    await expect(txtbox).toBeEditable();
+    await txtbox.fill("Laptop");
+    const button: Locator = page.locator("input.search-box-butt");
+    await expect.soft(button).toBeVisible({ timeout: 20000 });
+    await expect.soft(button).not.toBeDisabled();
+    await expect.soft(button).toBeEnabled();
+    await button.click();
+    await page.waitForTimeout(4000);
+
 
 })
