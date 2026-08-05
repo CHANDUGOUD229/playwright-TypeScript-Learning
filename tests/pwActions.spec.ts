@@ -843,7 +843,7 @@ test("Auto waiting andforcing ", async ({ page }) => {
 
 })
 
-test.only("hard vs soft assertions", async ({ page }) => {
+test("hard vs soft assertions", async ({ page }) => {
     test.setTimeout(20000);
     await page.goto("https://demowebshop.tricentis.com/");
 
@@ -879,5 +879,73 @@ test.only("hard vs soft assertions", async ({ page }) => {
     await button.click();
     await page.waitForTimeout(4000);
 
-
 })
+
+
+test('naukari profile update', async ({ page }) => {
+  await page.goto('https://www.naukri.com/');
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('9542427545');
+  await page.getByRole('button', { name: 'Login', exact: true }).click();
+  await page.getByRole('link', { name: 'View profile' }).click();
+//   await page.getByRole('button', { name: 'Update resume' }).click();
+//   await page.getByRole('button', { name: 'Choose File' }).setInputFiles('Chandra_Shekhar_Chirra_3+YResume (2) (1).pdf');
+  await page.locator('#lazyKeySkills').getByText('editOneTheme').click();
+  await page.locator('div:nth-child(17) > .material-icons').click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await page.locator('.lightbox.profileEditDrawer.profileUpdatedProLayer > .crossLayer > .icon').click();
+  await page.locator('#lazyKeySkills').getByText('editOneTheme').click();
+  await page.getByRole('textbox', { name: 'Add skills' }).click();
+  await page.getByRole('textbox', { name: 'Add skills' }).click();
+  await page.getByRole('textbox', { name: 'Add skills' }).pressSequentially("java");
+  await page.waitForTimeout(3000);
+  await page.getByText('Core Java').click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await page.getByRole('button', { name: 'Open profile menu' }).click();
+  await page.getByRole('button', { name: 'Logout' }).click();
+});
+
+
+
+
+test('naukari update profile keyskills', async ({ page }) => {
+  await page.goto('https://www.naukri.com/');
+  await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
+  await expect(page.getByRole('textbox', { name: 'Password' })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('9542427545');
+  await expect(page.getByRole('button', { name: 'Login', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Login', exact: true }).click();
+  await expect(page.getByRole('link', { name: 'View profile' })).toBeVisible();
+  await page.getByRole('link', { name: 'View profile' }).dblclick();
+  await expect(page.getByText('Selenium WebDriverTestngBDD')).toBeVisible();
+  await page.locator('#lazyKeySkills').getByText('editOneTheme').dblclick();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Selenium WebDriver')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Testng')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('BDD Cucumber')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Rest Assured')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Playwright')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('GIT')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('JIRA')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Testrail')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Smoke Testing')).toBeVisible();
+  await expect(page.locator('form[name="keySkillsForm"]').getByText('Core Java')).toBeVisible();
+  await page.locator('div:nth-child(17) > .material-icons').click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByText('Profile updated successfully')).toBeVisible();
+  await expect(page.locator('.lightbox.profileEditDrawer.profileUpdatedProLayer > .crossLayer > .icon')).toBeVisible();
+  await page.locator('.lightbox.profileEditDrawer.profileUpdatedProLayer > .crossLayer > .icon').click();
+  await page.locator('#lazyKeySkills').getByText('editOneTheme').dblclick();
+  await page.getByRole('textbox', { name: 'Add skills' }).click();
+  await page.getByRole('textbox', { name: 'Add skills' }).pressSequentially('java');
+  await page.getByText('Core Java').click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('button', { name: 'Open profile menu' })).toBeVisible();
+  await page.getByRole('button', { name: 'Open profile menu' }).click();
+  await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
+  await page.getByRole('button', { name: 'Logout' }).click();
+  await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
+});
