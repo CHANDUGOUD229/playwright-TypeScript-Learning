@@ -14,21 +14,29 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
 
-  // to change the time globally for all test (default time is 30000 ms = 30sec)
+  // to change the time globally for all test (default time is 30000 ms = 30sec) by chandra.........
   timeout: 60000,
-  // to apply longer wait for expect conditions (default time is 5000 ms = 5sec )
-    expect:{timeout:10000},
+  // to apply longer wait for expect conditions (default time is 5000 ms = 5sec ) by chandra..........
+  expect: { timeout: 10000 },
 
 
 
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    // screenshot:'off',//it will not take the screen shot  by chandra........
+    // screenshot: 'on',//it will take the screen shot  by chandra
+    // screenshot:'on-first-failure',//on first failure it will take screeen shot  by chandra............
+    screenshot: 'only-on-failure',//on every failure it will take screen shot   by chandra..........
+
+    video:"retain-on-failure", 
+
+
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'off',
     testIdAttribute: "data-pw" //configered data-testid
   },
 
