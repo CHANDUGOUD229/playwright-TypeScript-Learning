@@ -967,7 +967,7 @@ test("screen shots and video capture ", async ({ page }) => {
 })
 
 
-test.only("screen shots from config", async ({ page,context}) => {
+test("screen shots from config", async ({ page,context}) => {
     context.tracing.start({snapshots:true,screenshots:true})
 await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
@@ -987,5 +987,19 @@ await page.goto('https://www.naukri.com/');
     await page.getByRole('button', { name: 'Logout' }).click();
     await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
     context.tracing.stop({path:"trace.zip"});//it will saved under the project
+
+})
+
+test.only("flaky test handling by playwrite ", async ({ page,context}) => {
+await page.goto('https://www.naukri.com/');
+    await page.getByRole('link', { name: 'Login' }).click();
+    await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
+    await page.getByRole('textbox', { name: 'Password' }).fill('9542427545');
+    await page.waitForTimeout(5000);
+    await page.getByRole('button', { name: 'Login', exact: true }).click();
+    await page.getByRole('link', { name: 'View profile' }).click();
+    await page.getByRole('button', { name: 'Open profile menu' }).click();
+    await page.getByRole('button', { name: 'Logout' }).click();
+    await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
 
 })

@@ -1,87 +1,91 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   testDir: './tests',
 
-  // to change the time globally for all test (default time is 30000 ms = 30sec) by chandra.........
-  timeout: 60000,
-  // to apply longer wait for expect conditions (default time is 5000 ms = 5sec ) by chandra..........
-  expect: { timeout: 10000 },
+  // Global timeout for each test  by chandra
+  timeout: 60 * 1000,
 
-
-
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    // screenshot:'off',//it will not take the screen shot  by chandra........
-    // screenshot: 'on',//it will take the screen shot  by chandra
-    // screenshot:'on-first-failure',//on first failure it will take screeen shot  by chandra............
-    screenshot: 'only-on-failure',//on every failure it will take screen shot   by chandra..........
-
-    video:"retain-on-failure", 
-
-
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'off',
-    testIdAttribute: "data-pw" //configered data-testid
+  // Timeout for expect assertions by chandra
+  expect: {
+    timeout: 10 * 1000,
   },
 
-  /* Configure projects for major browsers */
+  // Execute tests in parallel
+  fullyParallel: true,
+
+  // Prevent accidental test.only in CI
+  forbidOnly: !!process.env.CI,
+
+  // Retry failed tests in CI
+  // retries: process.env.CI ? 2 : 0,
+
+  // Retry failed tests in local by chandra
+  retries:3,
+
+  // Number of workers
+  workers: process.env.CI ? 1 : undefined,
+
+  reporter: [
+    ['html'],
+    ['list']
+    // ['json', { outputFile: 'test-results/results.json' }],
+    // ['junit', { outputFile: 'test-results/results.xml' }]
+  ],
+
+  use: {
+    headless: false,
+
+    // Launch browser maximized
+    viewport: null,
+
+    launchOptions: {
+      args: ['--start-maximized'],
+      slowMo: 0
+    },
+
+    actionTimeout: 15000,
+
+    navigationTimeout: 30000,
+
+    screenshot: 'only-on-failure',  //by chandra
+
+    video: 'retain-on-failure',     // by chandra
+
+    trace: 'retain-on-failure',     // by chandra
+
+    ignoreHTTPSErrors: true,
+
+    acceptDownloads: true,
+
+    testIdAttribute: 'data-pw',
+
+    // baseURL: 'https://yourapplication.com'
+  },
+
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
 
-    /* {
-       name: 'firefox',
-       use: { ...devices['Desktop Firefox'] },
-     },
- 
-     {
-       name: 'webkit',
-       use: { ...devices['Desktop Safari'] },
-     },*/
-
-    /* Test against mobile viewports. */
+    // Uncomment when needed
     // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
+    //   name: 'firefox',
+    //   use: {
+    //     ...devices['Desktop Firefox'],
+    //   },
     // },
 
-    /* Test against branded browsers. */
     // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    //   name: 'webkit',
+    //   use: {
+    //     ...devices['Desktop Safari'],
+    //   },
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  outputDir: 'test-results/',
 });
