@@ -12,7 +12,7 @@ export default defineConfig({
   },
 
   // Execute tests in parallel
-  fullyParallel: true,
+  fullyParallel: false,
 
   // Prevent accidental test.only in CI
   forbidOnly: !!process.env.CI,

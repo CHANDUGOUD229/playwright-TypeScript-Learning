@@ -3,7 +3,7 @@ import { test, expect, Locator, Page, chromium, FrameLocator, firefox, webkit } 
 //radio button
 //check boxes
 
-
+/*
 test("text box action", async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     const textBox: Locator = page.locator("input#name");
@@ -806,21 +806,21 @@ test("handle popup windows", async ({ browser }) => {
 test("handle authentication popup", async ({ browser }) => {
     // https://username:password@the-internet.herokuapp.com/
     // Approch 1
-    /* const context = await browser.newContext();
+     const context = await browser.newContext();
       const page = await context.newPage();
       await page.goto("https://admin:admin@the-internet.herokuapp.com/basic_auth");
       await page.waitForLoadState();
       await expect( page.locator("text=Congratulations")).toBeVisible();
       await page.waitForTimeout(6000);
-      */
+      
 
-    // Approch 2 passing username and password browsercontext
-    const context = await browser.newContext({ httpCredentials: { username: "admin", password: "admin" } });
-    const page = await context.newPage();
-    await page.goto("https://the-internet.herokuapp.com/basic_auth");
-    await page.waitForLoadState();
-    await expect(page.locator("text=Congratulations")).toBeVisible();
-    await page.waitForTimeout(2000);
+// Approch 2 passing username and password browsercontext
+const context = await browser.newContext({ httpCredentials: { username: "admin", password: "admin" } });
+const page = await context.newPage();
+await page.goto("https://the-internet.herokuapp.com/basic_auth");
+await page.waitForLoadState();
+await expect(page.locator("text=Congratulations")).toBeVisible();
+await page.waitForTimeout(2000);
 
 
 })
@@ -967,9 +967,9 @@ test("screen shots and video capture ", async ({ page }) => {
 })
 
 
-test("screen shots from config", async ({ page,context}) => {
-    context.tracing.start({snapshots:true,screenshots:true})
-await page.goto('https://www.naukri.com/');
+test("screen shots from config", async ({ page, context }) => {
+    context.tracing.start({ snapshots: true, screenshots: true })
+    await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
@@ -986,12 +986,12 @@ await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
     await page.getByRole('button', { name: 'Logout' }).click();
     await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
-    context.tracing.stop({path:"trace.zip"});//it will saved under the project
+    context.tracing.stop({ path: "trace.zip" });//it will saved under the project
 
 })
 
-test.only("flaky test handling by playwrite ", async ({ page,context}) => {
-await page.goto('https://www.naukri.com/');
+test("flaky test handling by playwrite ", async ({ page, context }) => {
+    await page.goto('https://www.naukri.com/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
     await page.getByRole('textbox', { name: 'Password' }).fill('9542427545');
@@ -1003,3 +1003,30 @@ await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
 
 })
+*/
+
+// This is groups concepts 
+
+test.describe("group1", async () => {
+
+    test("test1", async () => {
+    console.log("Test 1 method");
+})
+test("test2", async () => {
+    console.log("Test 2 method");
+})
+
+})
+
+test.describe("group2", async () => {
+
+    test("test3", async () => {
+    console.log("Test 3 method");
+})
+test("test4", async () => {
+    console.log("Test 4 method");
+})
+
+})
+
+
