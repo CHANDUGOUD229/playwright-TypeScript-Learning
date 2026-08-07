@@ -3,7 +3,7 @@ import { test, expect, Locator, Page, chromium, FrameLocator, firefox, webkit } 
 //radio button
 //check boxes
 
-/*
+
 test("text box action", async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     const textBox: Locator = page.locator("input#name");
@@ -18,7 +18,7 @@ test("text box action", async ({ page }) => {
     await page.waitForTimeout(3000);
 })
 
-test("radio button & check box validation ", async ({ page }) => {
+test("@sanity @regression radio button & check box validation ", async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     const radioBtn: Locator = page.locator("#male");
     await expect(radioBtn).toBeVisible();
@@ -33,7 +33,7 @@ test("radio button & check box validation ", async ({ page }) => {
 
 })
 
-test("checkbox actions", async ({ page }) => {
+test("checkbox actions",{tag:"@regression"}, async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     // const sunday: Locator = page.getByLabel("Sunday");
     // await sunday.check();
@@ -87,7 +87,7 @@ test("checkbox actions", async ({ page }) => {
 
 })
 
-test("demo test radio btn and check boxes", async ({ page }) => {
+test("demo test radio btn and check boxes",{tag:["@sanity","@regression"]}, async ({ page }) => {
     await page.goto("https://demo.automationtesting.in/Register.html");
     const firstName: Locator = page.getByPlaceholder("First Name");
     await expect(firstName).toBeVisible();
@@ -122,7 +122,7 @@ test("demo test radio btn and check boxes", async ({ page }) => {
 })
 
 
-test("handle single dropdown", async ({ page }) => {
+test("handle single dropdown",{tag:"@sanity"}, async ({ page }) => {
     await page.goto("https://testautomationpractice.blogspot.com/");
     // await page.locator("#country").selectOption("United Kingdom"); //by visible text
     // await page.locator("#country").selectOption({ value: 'japan' });//using value attribute
@@ -806,13 +806,13 @@ test("handle popup windows", async ({ browser }) => {
 test("handle authentication popup", async ({ browser }) => {
     // https://username:password@the-internet.herokuapp.com/
     // Approch 1
-     const context = await browser.newContext();
+   /*  const context = await browser.newContext();
       const page = await context.newPage();
       await page.goto("https://admin:admin@the-internet.herokuapp.com/basic_auth");
       await page.waitForLoadState();
       await expect( page.locator("text=Congratulations")).toBeVisible();
       await page.waitForTimeout(6000);
-      
+      */
 
 // Approch 2 passing username and password browsercontext
 const context = await browser.newContext({ httpCredentials: { username: "admin", password: "admin" } });
@@ -1003,10 +1003,10 @@ test("flaky test handling by playwrite ", async ({ page, context }) => {
     await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
 
 })
-*/
+
 
 // This is groups concepts...................
-/*
+
 test.describe("group1", async () => {
 
     test("test1", async () => {
@@ -1028,10 +1028,10 @@ test("test4", async () => {
 })
 
 })
-*/
+
 
 // Hooks concepts.....................
-
+/*
 test.beforeEach("beforeEach", async () => {
     console.log("before each method.......");
 
@@ -1065,3 +1065,5 @@ test("test3", async () => {
 test("test4", async () => {
     console.log("Test 4 method");
 })
+
+*/
