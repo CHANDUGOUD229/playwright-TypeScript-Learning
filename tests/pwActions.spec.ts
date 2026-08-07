@@ -967,9 +967,9 @@ test("screen shots and video capture ", async ({ page }) => {
 })
 
 
-test("screen shots from config", async ({ page,context}) => {
-    context.tracing.start({snapshots:true,screenshots:true})
-await page.goto('https://www.naukri.com/');
+test("screen shots from config", async ({ page, context }) => {
+    context.tracing.start({ snapshots: true, screenshots: true })
+    await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
@@ -986,12 +986,12 @@ await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
     await page.getByRole('button', { name: 'Logout' }).click();
     await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
-    context.tracing.stop({path:"trace.zip"});//it will saved under the project
+    context.tracing.stop({ path: "trace.zip" });//it will saved under the project
 
 })
 
-test.only("flaky test handling by playwrite ", async ({ page,context}) => {
-await page.goto('https://www.naukri.com/');
+test.only("flaky test handling by playwrite ", async ({ page, context }) => {
+    await page.goto('https://www.naukri.com/');
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByRole('textbox', { name: 'Email ID / Username' }).fill('chandu96qa@outlook.com');
     await page.getByRole('textbox', { name: 'Password' }).fill('9542427545');
@@ -1003,3 +1003,31 @@ await page.goto('https://www.naukri.com/');
     await expect(page.getByRole('link', { name: 'Naukri.com' }).first()).toBeVisible();
 
 })
+
+
+
+// This is groups concepts 
+
+test.describe("group1", async () => {
+
+    test("test1", async () => {
+        console.log("Test 1 method");
+    })
+    test("test2", async () => {
+        console.log("Test 2 method");
+    })
+
+})
+
+test.describe("group2", async () => {
+
+    test("test3", async () => {
+        console.log("Test 3 method");
+    })
+    test("test4", async () => {
+        console.log("Test 4 method");
+    })
+
+})
+
+
