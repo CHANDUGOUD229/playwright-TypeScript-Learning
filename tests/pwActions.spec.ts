@@ -1005,8 +1005,8 @@ test("flaky test handling by playwrite ", async ({ page, context }) => {
 })
 */
 
-// This is groups concepts 
-
+// This is groups concepts...................
+/*
 test.describe("group1", async () => {
 
     test("test1", async () => {
@@ -1028,5 +1028,40 @@ test("test4", async () => {
 })
 
 })
+*/
+
+// Hooks concepts.....................
+
+test.beforeEach("beforeEach", async () => {
+    console.log("before each method.......");
+
+})
+
+test.afterEach("afterEach", async () => {
+console.log("After each method.......");
+})
 
 
+
+test.beforeAll("beforeEach", async () => {
+    console.log("before each method.......");
+
+})
+
+test.afterAll("afterEach", async () => {
+console.log("After each method.......");
+})
+
+test("test1", async () => {
+    console.log("Test 1 method");
+})
+test("test2", async () => {
+    console.log("Test 2 method");
+})
+
+test("test3", async () => {
+    console.log("Test 3 method");
+})
+test("test4", async () => {
+    console.log("Test 4 method");
+})
