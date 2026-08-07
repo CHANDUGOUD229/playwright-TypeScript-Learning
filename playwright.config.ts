@@ -2,7 +2,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-
+  // grep:/@sanity/,  //only it will run sanity tag b chandra
+  grep: /(?=.*@sanity)(?=.*@regression)/,// it will run both sanity and regression tags by chandra
+  grepInvert: /@sanity/,
   // Global timeout for each test  by chandra
   timeout: 60 * 1000,
 

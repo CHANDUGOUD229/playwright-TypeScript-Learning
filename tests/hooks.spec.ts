@@ -74,19 +74,20 @@ test("launch app store", async ({page,browserName}) => {
     test.skip(browserName==="chromium","test is skipped browsername firfox")
     await page.goto("https://www.demoblaze.com/cart.html#");
 })
-
+// fixme also similar to skip annotation
 test.fixme("launch google", async ({page,browserName}) => {
         await page.goto("https://www.google.com/");
 
 })
 
+//fail annatation
 test.fail("launch insta", async ({page,browserName}) => {
         await page.goto("https://www.instagram.com/");
 
 
 })
 
-
+//slow annotation
 test("launch insta for slow", async ({page,browserName}) => {
     test.slow(); // triple the default timeout but its not recomended
         await page.goto("https://www.instagram.com/");
