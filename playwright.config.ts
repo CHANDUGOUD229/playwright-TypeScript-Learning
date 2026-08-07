@@ -21,7 +21,7 @@ export default defineConfig({
   // retries: process.env.CI ? 2 : 0,
 
   // Retry failed tests in local by chandra
-  retries:3,
+  // retries:1,
 
   // Number of workers
   workers: process.env.CI ? 1 : undefined,
