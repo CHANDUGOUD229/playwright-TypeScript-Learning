@@ -1,0 +1,22 @@
+[
+    {
+        "email": "test@emanil.com",
+        "pwd": "wewr123",
+        "validity": "invalid"
+    },
+    {
+        "email": "test123@emanil.com",
+        "pwd": "weytr123",
+        "validity": "invalid"
+    },
+    {
+        "email": "laura.taylor1234@example.com",
+        "pwd": "test123",
+        "validity": "valid"
+    },
+    {
+        "email": "",
+        "pwd": "",
+        "validity": "invalid"
+    }
+]

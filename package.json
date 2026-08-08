@@ -9,6 +9,10 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.2"
+    "@types/node": "^26.2.0"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.2",
+    "xlsx": "^0.18.5"
   }
 }
