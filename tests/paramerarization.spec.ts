@@ -60,7 +60,7 @@ test.describe.fixme("searching for a item", async () => {
 
 const loginTestData: string[][] = [
     ["test@emanil.com", "wewr123", "invalid"],
-    ["test123@emanil.com", "wewr123", "invalid"],
+    ["test123@emanil.com", "weytr123", "invalid"],
     ["laura.taylor1234@example.com", "test123", "valid"],
     ["", "", "invalid"],
 ];

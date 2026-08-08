@@ -1,0 +1,5 @@
+email,pwd,validity
+test@emanil.com,wewr123,invalid
+test123@emanil.com,weytr123,invalid
+laura.taylor1234@example.com,test123,valid
+,,invalid
