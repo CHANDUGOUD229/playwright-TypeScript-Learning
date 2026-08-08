@@ -3,17 +3,17 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   // grep:/@sanity/,  //only it will run sanity tag b chandra
-  grep: /(?=.*@sanity)(?=.*@regression)/,// it will run both sanity and regression tags by chandra
-  grepInvert: /@sanity/,
-  // Global timeout for each test  by chandra
+  // grep: /(?=.*@sanity)(?=.*@regression)/,// it will run both sanity and regression tags by chandra
+  // grepInvert: /@sanity/,
+  // Global timeout for each test  by chandra.........
   timeout: 60 * 1000,
 
-  // Timeout for expect assertions by chandra
+  // Timeout for expect assertions by chandra.........
   expect: {
     timeout: 10 * 1000,
   },
 
-  // Execute tests in parallel
+  // Execute tests in parallel by chandra.........
   fullyParallel: false,
 
   // Prevent accidental test.only in CI
@@ -22,11 +22,12 @@ export default defineConfig({
   // Retry failed tests in CI
   // retries: process.env.CI ? 2 : 0,
 
-  // Retry failed tests in local by chandra
+  // Retry failed tests in local by chandra.........
   // retries:1,
 
   // Number of workers
-  workers: process.env.CI ? 1 : undefined,
+  // workers:2,     // workers by chandra..........
+  // workers: process.env.CI ? 1 : undefined,
 
   reporter: [
     ['html'],
@@ -50,11 +51,11 @@ export default defineConfig({
 
     navigationTimeout: 30000,
 
-    screenshot: 'only-on-failure',  //by chandra
+    screenshot: 'only-on-failure',  //by chandra.........
 
-    video: 'retain-on-failure',     // by chandra
+    video: 'retain-on-failure',     // by chandra.........
 
-    trace: 'retain-on-failure',     // by chandra
+    trace: 'retain-on-failure',     // by chandra.........
 
     ignoreHTTPSErrors: true,
 
@@ -69,8 +70,8 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-      },
+        ...devices['Desktop Chrome'] },
+      // fullyParallel: true
     },
 
     // Uncomment when needed
