@@ -29,15 +29,20 @@ export default defineConfig({
   // workers:2,     // workers by chandra..........
   // workers: process.env.CI ? 1 : undefined,
 
+  // 'outputFolder':'html-report'  we can config custome
+
   reporter: [
-    ['html'],
-    ['list']
-    // ['json', { outputFile: 'test-results/results.json' }],
-    // ['junit', { outputFile: 'test-results/results.xml' }]
+    ['html', { open: "always" }],
+    ['list'],
+    ["line"],
+    ['dot'],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/results.xml' }],
+    ['allure-playwright']
   ],
 
   use: {
-    headless: false,
+    headless: true,
 
     // Launch browser maximized
     viewport: null,
@@ -70,7 +75,8 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'] },
+        ...devices['Desktop Chrome']
+      },
       // fullyParallel: true
     },
 
