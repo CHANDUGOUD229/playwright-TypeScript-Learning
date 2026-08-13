@@ -12,7 +12,7 @@ const worksheet = workbook.Sheets[sheetName];
 
 //convert sheet in to json 
 const loginData: any = XLSX.utils.sheet_to_json(worksheet);
-console.log(loginData);
+// console.log(loginData);
 
 
 test.describe("Login data driven testing json file", async () => {
