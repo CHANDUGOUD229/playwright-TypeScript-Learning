@@ -1,6 +1,6 @@
 import { test, expect, chromium, Locator } from '@playwright/test';
 
-test.only("first class", { tag: '@qa' }, async () => {
+test.only("first class", { tag: '@rer' }, async () => {
 
     // chrome plugins and cookies
     const browser = await chromium.launch();
@@ -46,7 +46,7 @@ test.only("first class", { tag: '@qa' }, async () => {
 })
 
 
-test.only("autowait checking...", { tag: '@qaq' }, async ({ page, browser, browserName }) => {
+test("autowait checking...", { tag: '@tes' }, async ({ page, browser, browserName }) => {
 
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
     await page.locator("input#userEmail").fill("anshika@gmail.com");
@@ -56,4 +56,44 @@ test.only("autowait checking...", { tag: '@qaq' }, async ({ page, browser, brows
     console.log(await page.locator("div.card-body b").allTextContents());
 
 
+})
+
+test.only("UI controls...", { tag: '@qa' }, async ({ page, browser, browserName }) => {
+
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    const username = page.locator("input#username");
+    const password = page.locator("input#password");
+    const login = page.locator("input#signInBtn");
+    await username.fill("rahulshettyacademy");
+    await password.fill("Learning@830$3mK2");
+    // await login.click();
+
+    const radioBtn = page.locator("label.customradio");
+    await expect(radioBtn.first()).toBeChecked();
+
+    const flag = await radioBtn.first().isChecked();
+    // await page.pause();
+    if (flag) {
+        await radioBtn.last().click();
+        await page.locator("button#okayBtn").click();
+    } else {
+        await radioBtn.first().click();
+        await page.locator("button#okayBtn").click();
+
+    }
+    await expect(radioBtn.last()).toBeChecked();
+
+    const dropdown = page.locator("select.form-control");
+    await dropdown.selectOption({ value: 'teach' });
+    // await page.pause();
+    await dropdown.selectOption("Consultant");
+    const checkBox = await page.locator("input#terms");
+    const ischeck = await checkBox.isChecked();
+    if (!ischeck) {
+        await checkBox.check();
+    }
+    await expect(checkBox).toBeChecked();
+    await checkBox.uncheck();
+    await expect(checkBox).not.toBeChecked();
+    expect(await checkBox.isChecked()).toBeFalsy();
 })
