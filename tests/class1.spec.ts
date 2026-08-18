@@ -1,4 +1,4 @@
-import { test, expect, chromium, Locator } from '@playwright/test';
+import { test, expect, chromium, Locator, Page } from '@playwright/test';
 
 test.only("first class", { tag: '@rer' }, async () => {
 
@@ -58,7 +58,7 @@ test("autowait checking...", { tag: '@tes' }, async ({ page, browser, browserNam
 
 })
 
-test.only("UI controls...", { tag: '@qa' }, async ({ page, browser, browserName }) => {
+test("UI controls...", { tag: '@qa' }, async ({ page, browser, browserName }) => {
 
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     const username = page.locator("input#username");
@@ -96,4 +96,23 @@ test.only("UI controls...", { tag: '@qa' }, async ({ page, browser, browserName 
     await checkBox.uncheck();
     await expect(checkBox).not.toBeChecked();
     expect(await checkBox.isChecked()).toBeFalsy();
+
+    const blnkTxt = page.locator("[href*='document']");
+    await expect(blnkTxt).toHaveAttribute("class", "blinkingText");
 })
+
+
+test("Handling windows...", { tag: '@qa' }, async ({ browser, browserName }) => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    const blnkTxt = page.locator("[href*='document']");
+    const [newPage] = await Promise.all(
+        [
+            context.waitForEvent("page"),
+            await blnkTxt.click()
+        ]
+    );
+
+
+});
