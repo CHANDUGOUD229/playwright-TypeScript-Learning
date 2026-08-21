@@ -1,6 +1,6 @@
 import { test, expect, chromium, Locator, Page } from '@playwright/test';
 
-test.only("first class", { tag: '@rer' }, async () => {
+test("first class", { tag: '@rer' }, async () => {
 
     // chrome plugins and cookies
     const browser = await chromium.launch();
@@ -66,7 +66,7 @@ test("UI controls...", { tag: '@qa' }, async ({ page, browser, browserName }) =>
     const login = page.locator("input#signInBtn");
     await username.fill("rahulshettyacademy");
     await password.fill("Learning@830$3mK2");
-    // await login.click();
+    await login.click();
 
     const radioBtn = page.locator("label.customradio");
     await expect(radioBtn.first()).toBeChecked();
@@ -115,4 +115,102 @@ test("Handling windows...", { tag: '@qa' }, async ({ browser, browserName }) => 
     );
 
 
+    //console.log(domain);
+    await page.locator("#username").fill("chandra");
+    console.log(await page.locator("#username").inputValue());//it will get the input text and form and select 
+    console.log(await page.locator("#username").textContent());// reads the text inside an element 
+
+
 });
+
+test("E2E test", async ({ page }) => {
+
+    await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
+    await page.locator("input#userEmail").fill("anshika@gmail.com");
+    await page.locator("input#userPassword").fill("Iamking@000");
+    await page.locator("input#login").click();
+    const products = page.locator("div.card-body");
+    await products.first().waitFor();
+    await page.waitForLoadState("networkidle");
+    const expected: string = "iphone 13 pro";
+    const count: number = await products.count();
+
+
+    for (let i = 0; i < count; i++) {
+        let actulTxt: string | null = await products
+            .nth(i)
+            .locator("b")
+            .textContent();
+        console.log(actulTxt);
+        if (actulTxt === expected) {
+            await products
+                .nth(i)
+                .locator(">button.btn.w-10.rounded")
+                .click();
+            break;
+        }
+
+    }
+    await expect(page.locator("button[routerlink='/dashboard/cart'] label")).toHaveText("1");
+    await page.locator("button[routerlink='/dashboard/cart']").click({ timeout: 4000 });
+    await expect(page.locator(".heading.cf h1")).toHaveText("My Cart");
+    await expect(page.locator("div.cartSection h3")).toHaveText(expected,{timeout:3000});
+    await page.getByRole("button", { 'name': "Checkout" }).click();
+    await expect(page.locator(".payment__type.payment__type--cc.active")).toHaveText("Credit Card");
+    await expect(page.locator("div.item__title")).toHaveText("iphone 13 pro");
+    await page
+        .locator("div.field.small")
+        .filter({ hasText: "CVV Code" })
+        .locator("input")
+        .fill("754");
+
+    await page.getByPlaceholder("Select Country").pressSequentially("ind");
+    const lists = page.locator("section.ta-results.list-group.ng-star-inserted button");
+    await lists.first().waitFor();
+    const coun = await lists.count();
+    for (let i = 0; i < coun; i++) {
+        let country = await lists.nth(i).locator("span").textContent();
+        console.log(country);
+        if (country?.trim() === "India") {
+            await lists.nth(i).click();
+            break;
+        }
+
+    }
+
+
+
+    await page.locator("input[name='coupon']").fill("rahulshetty");
+    await page.getByRole('button', { 'name': "Apply Coupon" }).click();
+    await expect(page.getByText("* Invalid Coupon")).toHaveText("* Invalid Coupon");
+    await page.locator(".btnn.action__submit.ng-star-inserted").click();
+    await expect(page.getByText("iphone 13 pro")).toHaveText("iphone 13 pro");
+    const orderId = await page.locator("label.ng-star-inserted").textContent();
+    const actualOrderId: any = orderId?.replace(/^\s*\|\s*|\s*\|\s*$/g, "");
+
+    console.log(actualOrderId);
+    await page.getByText(" Orders History Page ").click();
+
+    let rows = page.locator("tbody tr");
+    await rows.first().waitFor();
+    let c = await rows.count();
+    for (let i = 0; i < c; i++) {
+        let row = rows.nth(i);
+        let expectedOrderId = await row.locator("th").textContent();
+        console.log(expectedOrderId);
+        console.log(`Actual:   [${actualOrderId}]`);
+        console.log(`Expected: [${expectedOrderId}]`);
+        if (expectedOrderId?.trim() === actualOrderId?.trim()) {
+            await row.getByRole("button", { name: "View" }).click();
+            break;
+        }
+
+    }
+    await expect(page.getByText(actualOrderId)).toHaveText(actualOrderId);
+    await page.getByRole('button', { "name": ' Sign Out ' }).click();
+
+    await page.waitForTimeout(5000);
+
+
+
+})
