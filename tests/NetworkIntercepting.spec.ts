@@ -3,7 +3,9 @@ import { ApiUtils } from "./Utils/ApiUtils";
 
 let loginPayload = { userEmail: "anshika@gmail.com", userPassword: "Iamking@000" };
 let orderCreationPayLoad = { orders: [{ country: "United States", productOrderedId: "6960ea76c941646b7a8b3dd5" }] };
+let body: any = { data: [], message: "No Orders" };
 let response: any;
+let payload: any;
 test.beforeAll(async () => {
 
     const apiContext = await request.newContext();
@@ -19,14 +21,22 @@ test("WebApp testing API", { tag: "@ss" }, async ({ page }) => {
     }, response.token);
 
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
-    const procductEx: string = "iphone 13 pro";
+    await page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*",
+        async route => {
+            //intersepting response-> API response ->{fake response}=> browser->render data to front end
+            const apiResponse = await page.request.fetch(route.request());
+            payload = JSON.stringify(body);
+            route.fulfill({
+                response: apiResponse,
+                body: payload
+            })
+        })
     await page.locator("button.btn.btn-custom").filter({ hasText: "ORDERS" }).click();
-    
+    await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*");
     const row = page.locator("tbody tr").filter({
         has: page.locator("th", { hasText: response.orderId })
     });
     await row.getByRole("button", { name: "View" }).click();
-    await page.pause();
     has: page.locator("th", { hasText: response.orderId })
     await expect(page.getByText(response.orderId)).toHaveText(response.orderId);
     await page.getByRole('button', { "name": ' Sign Out ' }).click();
