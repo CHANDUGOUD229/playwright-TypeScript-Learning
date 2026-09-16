@@ -1,5 +1,5 @@
 import { test, expect, request, chromium, Locator, Page } from '@playwright/test';
-import { ApiUtils } from "./Utils/ApiUtils";
+import { ApiUtils } from "../Utils/ApiUtils";
 
 let loginPayload = { userEmail: "anshika@gmail.com", userPassword: "Iamking@000" };
 let orderCreationPayLoad = { orders: [{ country: "United States", productOrderedId: "6960ea76c941646b7a8b3dd5" }] };

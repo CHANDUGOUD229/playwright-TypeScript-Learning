@@ -5,6 +5,8 @@ export default defineConfig({
   timeout:40*1000,
   expect:{timeout:40*1000},
   reporter:'html',
+  fullyParallel:true,
+  workers:30,
   use:{
 
     actionTimeout:10*10000,//it will wait each and evvery action

@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test WebApiPart2.spec.ts --headed"
+    "test": "cucumber-js",
+    "regression": "npx playwright test WebApiPart2.spec.ts --headed",
+    "webtest": "npx playwright test --grep @sanity --headed",
+    "apiTest": "npx playwright test --grep @api",
+    "chromeConfig": "npx playwright test --project=chromium",
+    "allure-report": "allure generate ./allure-results -o ./allure-report --clean && allure open ./allure-report"
   },
   "keywords": [],
   "author": "",
@@ -11,10 +16,14 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
+    "@types/exceljs": "^0.5.3",
     "@types/node": "^26.2.0",
-    "allure-playwright": "^3.10.2"
+    "allure-playwright": "^3.10.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@cucumber/cucumber": "^13.2.1",
     "csv-parse": "^7.0.2",
     "xlsx": "^0.18.5"
   }

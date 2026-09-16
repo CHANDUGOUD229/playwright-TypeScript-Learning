@@ -1,0 +1,22 @@
+[
+    {
+        "url": "https://rahulshettyacademy.com/client/#/auth/login",
+        "userName": "anshika@gmail.com",
+        "password": "Iamking@000",
+        "productId": "iphone 13 pro",
+        "cvv": "125",
+        "country": "indi",
+        "option": "India",
+        "couponCode":"testing"
+    },
+    {
+        "url": "https://rahulshettyacademy.com/client/#/auth/login",
+        "userName": "rahulshetty@gmail.com",
+        "password": "Iamking@000",
+        "productId": "ADIDAS ORIGINAL",
+        "cvv": "234",
+        "country": "indi",
+        "option": "India",
+        "couponCode":"testing"
+    }
+]
